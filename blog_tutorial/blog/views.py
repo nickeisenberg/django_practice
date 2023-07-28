@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import (
     UserPassesTestMixin
 )
 
-
+# no longer using this home() function. Using the PostListView class instead
 def home(request):
     context = {
         'posts': Post.objects.all()
@@ -20,6 +20,7 @@ class PostListView(ListView):
     template_name = 'blog/home.html'
     context_object_name = 'posts'
     ordering = ['-date_posted']
+    paginate_by = 2
 
 class PostDetailView(DetailView):
     model = Post
