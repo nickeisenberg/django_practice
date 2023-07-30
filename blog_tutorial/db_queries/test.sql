@@ -1,6 +1,7 @@
 -- sql can be interpreted. In the other tmux pane, run sqlite3 db.sqlite3
 -- to connect to the projects database. Then just run sql code line by line
 -- for whatever query you want.
+-- `python manage.py dbshell` is the samething as `sqlite3 db.sqlite3`
 
 -- We can get all the table names
 .tables
