@@ -35,16 +35,13 @@ def room(request, pk):
 
 def createroom(request):
    
-    form = RoomForm()
-
     if request.method == 'POST':
-
         form = RoomForm(request.POST)
-
         if form.is_valid():
-
             form.save()
             return redirect('home')
+    else:
+        form = RoomForm()
 
     context = {'form': form}
 
