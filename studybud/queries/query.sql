@@ -14,4 +14,9 @@ select * from auth_user_groups;
 -- Show all the columns from auth_user_groups
 pragma table_info(base_room);
 
-select * from base_room;
+select id, name from base_room;
+
+pragma table_info(base_room);
+
+select name from base_topic;
+
