@@ -20,3 +20,7 @@ pragma table_info(base_room);
 
 select name from base_topic;
 
+pragma table_info(base_message);
+
+select * from base_message;
+
