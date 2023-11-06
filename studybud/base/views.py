@@ -49,7 +49,6 @@ def logoutuser(request):
     return redirect('home')
 
 def registerpage(request):
-
     form = UserCreationForm()
 
     if request.method == 'POST':
@@ -136,11 +135,13 @@ def userprofile(request, pk):
 
 @login_required(login_url='/login')
 def createroom(request):
-
+    
     if request.method == 'POST':
         form = RoomForm(request.POST)
         if form.is_valid():
-            form.save()
+            room = form.save(commit=False)
+            room.host = request.user
+            room.save()
             return redirect('home')
     else:
         form = RoomForm()
