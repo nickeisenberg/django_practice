@@ -1,11 +1,10 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q
-from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from .models import Room, Topic, Message
+from .models import Room, Topic, Message, User
 from .forms import RoomForm, UserForm
 from django.http import HttpResponse
 
@@ -189,11 +188,12 @@ def updateroom(request, pk):
 
 @login_required(login_url='/login')
 def updateuser(request):
+
     user = request.user
     form = UserForm(instance=user)
     
     if request.method == "POST":
-        form = UserForm(request.POST, instance=user)
+        form = UserForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
             return redirect('user-profile', pk=user.id)
