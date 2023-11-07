@@ -19,17 +19,20 @@
         </div>
       </div>
       <div class="layout__body">
+
         <form class="form" action="" method="POST">
           {% csrf_token %}
          
+        {% comment %}
           {% for field in form %}
           <div class="form__group">
             <label for="room_name">{{field.label}}</label>
             {{field}}
           </div>
           {% endfor %}
+        {% endcomment %}
 
-         {% comment %}
+
           <div class="form__group">
             <label for="room_topic">Room Topic</label>
             <input required type="text" name="topic" list="topic-list"/>
@@ -51,7 +54,6 @@
             <label for="room_description">Room Description</label>
             {{form.description}}
           </div>
-          {% endcomment %}
 
 
           <!-- <div class="form__group">

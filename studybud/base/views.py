@@ -144,9 +144,6 @@ def createroom(request):
         if form.is_valid():
             room = form.save(commit=False)
             room.host = request.user
-            print(room.topic)
-            print(room.name)
-            print(room.description)
             room.save()
             return redirect('home')
 
