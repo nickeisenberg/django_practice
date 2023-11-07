@@ -79,7 +79,7 @@ def home(request):
         Q(description__icontains=q)
     )
 
-    topics = Topic.objects.all()
+    topics = Topic.objects.all()[:5]
     room_count = rooms.count()
 
     room_messages = Message.objects.filter(
@@ -235,7 +235,24 @@ def deletemessage(request, pk):
     context = {'obj': message}
     return render(request, 'base/delete.html', context)
 
+def activitypage(request):
+    
+    room_messages = Message.objects.all()
 
+    context = {
+        "room_messages": room_messages
+    }
+    return render(request, 'base/activity.html', context)
+
+def topicspage(request):
+
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    topics = Topic.objects.filter(name__icontains=q)
+
+    context = {
+        "topics": topics
+    }
+    return render(request, 'base/topics.html', context)
 
 
 
