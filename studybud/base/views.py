@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from .models import Room, Topic, Message
-from .forms import RoomForm
+from .forms import RoomForm, UserForm
 from django.http import HttpResponse
 
 
@@ -140,12 +140,16 @@ def createroom(request):
     topics = Topic.objects.all()
     
     if request.method == 'POST':
-        form = RoomForm(request.POST)
-        if form.is_valid():
-            room = form.save(commit=False)
-            room.host = request.user
-            room.save()
-            return redirect('home')
+        topic_name = request.POST.get('topic')
+        topic, created = Topic.objects.get_or_create(name=topic_name)
+        Room.objects.create(
+            host=request.user,
+            topic=topic,
+            name=request.POST.get('name'),
+            description=request.POST.get('description'),
+
+        )
+        return redirect('home')
 
     context = {
         'form': form,
@@ -166,18 +170,40 @@ def updateroom(request, pk):
         return HttpResponse("Your are not allowed here")
 
     if request.method == 'POST':
-        form = RoomForm(request.POST, instance=room)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
+        topic_name = request.POST.get('topic')
+        topic, created = Topic.objects.get_or_create(name=topic_name)
+        room.name = request.POST.get('name')
+        room.topic = topic
+        room.description = request.POST.get('description')
+        room.save()
+        return redirect('home')
 
     context = {
         'form': form,
+        'room': room,
         'topics': topics,
     }
 
     return render(request, 'base/room_form.html', context)
 
+
+@login_required(login_url='/login')
+def updateuser(request):
+    user = request.user
+    form = UserForm(instance=user)
+    
+    if request.method == "POST":
+        form = UserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('user-profile', pk=user.id)
+        else:
+            print("fail")
+
+    context = {
+        "form": form
+    }
+    return render(request, 'base/update_user.html', context)
 
 @login_required(login_url='/login')
 def deleteroom(request, pk):
