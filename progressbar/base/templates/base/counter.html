@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,19 +9,15 @@
   </head>
 
   </body>
+
     <h1>Here is the counter</h1>
     
     <div id="counter_here">
     </div>
   
+    <script src="{% static 'base/counter.js' %}"></script>
     <script>
-      const counterDiv = document.getElementById('counter_here');
-      var socket = new WebSocket('ws://' + window.location.host + '/ws/counter/');
-
-      socket.onmessage = function(e) {
-        const data = JSON.parse(e.data);
-        counterDiv.innerText = 'Counter: ' + data.counter;
-      };
+      initializeWebSocket('ws://' + window.location.host + '/ws/counter/', 'counter_here');
     </script>
   </body>
 </html>
