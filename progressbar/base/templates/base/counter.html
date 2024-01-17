@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+
+  </body>
+    <h1>Here is the counter</h1>
+    
+    <div id="counter_here">
+    </div>
+  
+    <script>
+      const counterDiv = document.getElementById('counter_here');
+      var socket = new WebSocket('ws://' + window.location.host + '/ws/counter/');
+
+      socket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        counterDiv.innerText = 'Counter: ' + data.counter;
+      };
+    </script>
+  </body>
+</html>

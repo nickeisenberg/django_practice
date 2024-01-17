@@ -97,7 +97,6 @@ def home(request):
     return render(request, 'base/home.html', context)
 
 def room(request, pk):
-    
     room = Room.objects.get(id=pk)
     room_messages = room.message_set.all().order_by("-created")
     participants = room.participants.all()
@@ -136,7 +135,6 @@ def userprofile(request, pk):
 
 @login_required(login_url='/login')
 def createroom(request):
-
     if request.method == 'POST':
         form = RoomForm(request.POST)
         if form.is_valid():
