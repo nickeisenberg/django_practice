@@ -20,8 +20,11 @@ def update_counter():
     channel_layer = get_channel_layer()
     for i in range(10):
         x = i + 1
-        async_to_sync(channel_layer.group_send)('counter_group', {
-            'type': 'counter.update',
-            'message': x
-        })
+        async_to_sync(channel_layer.group_send)(
+            'counter_group', 
+            {
+                'type': 'counter.update',
+                'message': x
+            }
+        )
         time.sleep(1)

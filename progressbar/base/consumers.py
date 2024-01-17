@@ -24,4 +24,3 @@ class CounterConsumer(AsyncWebsocketConsumer):
                 {'counter': event['message']}
             )
         )
-
