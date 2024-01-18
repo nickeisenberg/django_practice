@@ -20,7 +20,7 @@ class CounterConsumer(AsyncWebsocketConsumer):
         await self.send(
             text_data=json.dumps(
                 {
-                    'counter': event['message'],
+                    'counter': event['current_count'],
                     'total': event['total']
                 }
             )

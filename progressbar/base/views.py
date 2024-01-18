@@ -24,7 +24,7 @@ def update_counter():
             'counter_group', 
             {
                 'type': 'counter.update',
-                'message': x,
+                'current_count': x,
                 'total': 10
             }
         )
