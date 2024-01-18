@@ -23,22 +23,25 @@ class Counter(View):
         context = {}
         return render(request, 'base/counter.html', context)
 
-    def _update_counter(self, ls, django_updater):
+    def post(self, request, *args, **kwargs):
+        context = {}
+        return render(request, 'main.html', context)
+
+    def _update_counter(self, ls):
         then = time.time()
         for i, l in enumerate(ls):
             now = time.time()
 
             self.m.append(l)
 
-            if django_updater:
-                if now - then > 1:
-                    then = now
-                    channel_layer = get_channel_layer()
-                    async_to_sync(channel_layer.group_send)(
-                        'counter_group', 
-                        {
-                            'type': 'counter.update',
-                            'current_count': i + 1,
-                            'total': 100000000
-                        }
-                    )
+            if now - then > 1:
+                then = now
+                channel_layer = get_channel_layer()
+                async_to_sync(channel_layer.group_send)(
+                    'counter_group', 
+                    {
+                        'type': 'counter.update',
+                        'current_count': i + 1,
+                        'total': 100000000
+                    }
+                )
