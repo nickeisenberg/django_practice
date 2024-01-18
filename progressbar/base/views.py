@@ -27,6 +27,7 @@ class Counter(View):
         then = time.time()
         for i, l in enumerate(ls):
             now = time.time()
+
             self.m.append(l)
 
             if django_updater:
