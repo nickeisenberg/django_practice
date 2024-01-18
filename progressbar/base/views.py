@@ -13,7 +13,7 @@ def home(request):
 def counter(request):
     threading.Thread(
         target=update_counter,
-        args=[range(100000000), True]
+        kwargs={'ls': range(100000000), "django_updater": True}
     ).start()
     context = {}
     return render(request, 'base/counter.html', context)
