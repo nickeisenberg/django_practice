@@ -15,7 +15,6 @@ def counter(request):
     context = {}
     return render(request, 'base/counter.html', context)
 
-
 def update_counter():
     channel_layer = get_channel_layer()
     for i in range(10):
@@ -29,3 +28,24 @@ def update_counter():
             }
         )
         time.sleep(1)
+
+def counter2(request):
+    threading.Thread(target=update_counter2).start()
+
+    for x in range(10):
+        update_counter2(x)
+
+    context = {}
+    return render(request, 'base/counter.html', context)
+
+def update_counter2(x):
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        'counter_group', 
+        {
+            'type': 'counter.update',
+            'current_count': x,
+            'total': 10
+        }
+    )
+    time.sleep(1)
