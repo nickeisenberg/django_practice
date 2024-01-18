@@ -11,7 +11,10 @@ def home(request):
 
 
 def counter(request):
-    threading.Thread(target=update_counter).start()
+    threading.Thread(
+        target=update_counter,
+        args=[range(100000000), True]
+    ).start()
     context = {}
     return render(request, 'base/counter.html', context)
 
@@ -43,12 +46,9 @@ def update_counter_():
             )
 
 
-def update_counter(ls=range(100000000), django_updater=True):
+def update_counter(ls, django_updater):
 
     m = []
-
-    if django_updater:
-        channel_layer = get_channel_layer()
 
     then = time.time()
     for i, l in enumerate(ls):
@@ -58,6 +58,7 @@ def update_counter(ls=range(100000000), django_updater=True):
         if django_updater:
             if now - then > 1:
                 then = now
+                channel_layer = get_channel_layer()
                 async_to_sync(channel_layer.group_send)(
                     'counter_group', 
                     {
