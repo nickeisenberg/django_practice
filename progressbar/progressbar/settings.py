@@ -48,7 +48,6 @@ CHANNEL_LAYERS = {
     },
 }
 
-# settings.py
 ASGI_APPLICATION = 'progressbar.asgi.application'
 
 
