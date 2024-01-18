@@ -15,16 +15,29 @@ def counter(request):
     context = {}
     return render(request, 'base/counter.html', context)
 
+
 def update_counter():
     channel_layer = get_channel_layer()
-    for i in range(10):
-        x = i + 1
-        async_to_sync(channel_layer.group_send)(
-            'counter_group', 
-            {
-                'type': 'counter.update',
-                'current_count': x,
-                'total': 10
-            }
-        )
-        time.sleep(1)
+
+    then = time.time()
+    for x in range(100000000):
+        now = time.time()
+        if now - then > 1:
+            then = now
+            async_to_sync(channel_layer.group_send)(
+                'counter_group', 
+                {
+                    'type': 'counter.update',
+                    'current_count': x,
+                    'total': 100000000
+                }
+            )
+        elif x == 100000000 - 1:
+            async_to_sync(channel_layer.group_send)(
+                'counter_group', 
+                {
+                    'type': 'counter.update',
+                    'current_count': x + 1,
+                    'total': 100000000
+                }
+            )
