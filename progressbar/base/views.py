@@ -16,7 +16,7 @@ def counter(request):
     return render(request, 'base/counter.html', context)
 
 
-def update_counter():
+def update_counter_():
     channel_layer = get_channel_layer()
 
     then = time.time()
@@ -41,3 +41,28 @@ def update_counter():
                     'total': 100000000
                 }
             )
+
+
+def update_counter(ls=range(100000000), django_updater=True):
+
+    m = []
+
+    if django_updater:
+        channel_layer = get_channel_layer()
+
+    then = time.time()
+    for i, l in enumerate(ls):
+        now = time.time()
+        m.append(l)
+
+        if django_updater:
+            if now - then > 1:
+                then = now
+                async_to_sync(channel_layer.group_send)(
+                    'counter_group', 
+                    {
+                        'type': 'counter.update',
+                        'current_count': i + 1,
+                        'total': 100000000
+                    }
+                )
