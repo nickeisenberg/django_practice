@@ -24,7 +24,8 @@ def update_counter():
             'counter_group', 
             {
                 'type': 'counter.update',
-                'message': x
+                'message': x,
+                'total': 10
             }
         )
         time.sleep(1)

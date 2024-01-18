@@ -1,5 +1,3 @@
-# base/consumers.py
-
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 
@@ -21,6 +19,9 @@ class CounterConsumer(AsyncWebsocketConsumer):
     async def counter_update(self, event):
         await self.send(
             text_data=json.dumps(
-                {'counter': event['message']}
+                {
+                    'counter': event['message'],
+                    'total': event['total']
+                }
             )
         )
