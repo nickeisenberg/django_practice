@@ -4,7 +4,8 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 import threading
 from .utils import ListAppender
-
+import time
+import numpy as np
 
 def home(request):
     context = {}
@@ -23,7 +24,7 @@ class Counter(View):
     def get(self, request, *args, **kwargs):
         threading.Thread(
             target=self._threader_function,
-            kwargs={'ls': range(100000000)}
+            kwargs={'ls': range(10000000)}
         ).start()
         context = {}
         return render(request, 'base/counter.html', context)
@@ -47,7 +48,7 @@ class Counter(View):
             'counter_group', 
             {
                 'type': 'counter.update',
-                'current_count': i + 1,
+                'current_count':f'%{np.round(100 * (i + 1) / total, 2)}',
                 'total': total
             }
         )

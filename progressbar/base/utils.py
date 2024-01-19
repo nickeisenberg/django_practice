@@ -12,11 +12,16 @@ class ListAppender:
         
         then = time.time()
         for i, l in enumerate(ls):
-            now = time.time()
     
             self.m.append(l)
             
             if updater:
-                if now - then > 1:
+                now = time.time()
+                if i == 0 or i == len(ls) - 1:
+                    time.sleep(.1)
                     then = now
                     updater(i, len(ls))
+                elif now - then > 1:
+                    then = now
+                    updater(i, len(ls))
+

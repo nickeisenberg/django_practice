@@ -5,8 +5,7 @@ function initializeWebSocket(url, elementId) {
   socket.onmessage = function(e) {
     const data = JSON.parse(e.data);
     if (data.counter !== undefined) {
-      var msg = 'Counter: ' + data.counter;
-      msg += ' Total:' + data.total
+      var msg = 'Counter: ' + data.counter + ' Total:' + data.total
       element.innerText = msg;
     }
   };
